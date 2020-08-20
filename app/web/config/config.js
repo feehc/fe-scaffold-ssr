@@ -25,7 +25,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  title: false,
+  title: false, 
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   theme: {

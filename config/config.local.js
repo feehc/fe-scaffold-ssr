@@ -36,6 +36,13 @@ module.exports = (appInfo, appConfig = {}) => {
       pathRewrite: {
         '^': '',
       },
+    },
+    '/public/': {
+      target: `http://127.0.0.1:${port}`,
+      changeOrigin: true,
+      pathRewrite: {
+        '^/public': '',
+      },
     }
   };
   return config;
