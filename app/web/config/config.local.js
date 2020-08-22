@@ -1,7 +1,7 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-  publicPath: '/public/',
+  publicPath: '/',
   // targets: false,
   autoprefixer: false
 });

@@ -37,11 +37,11 @@ module.exports = (appInfo, appConfig = {}) => {
         '^': '',
       },
     },
-    '/public/': {
+    '/static/': {
       target: `http://127.0.0.1:${port}`,
       changeOrigin: true,
       pathRewrite: {
-        '^/public': '',
+        '^': '',
       },
     }
   };
