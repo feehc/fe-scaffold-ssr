@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 
 module.exports = (appInfo, appConfig = {}) => {
@@ -12,7 +11,7 @@ module.exports = (appInfo, appConfig = {}) => {
   };
 
   config.assets = {
-    publicPath: '/public',
+    // publicPath: '/public',
     devServer: {
       command: 'umi dev',
       debug: true,
@@ -28,18 +27,18 @@ module.exports = (appInfo, appConfig = {}) => {
     },
     dynamicLocalIP: false,
   };
-  
+
+  // 仅对由浏览器端发起的请求有代理作用，服务端（umi.server）发起的请求在本层代理之后
   config.httpProxy = {
-    '/api/': {
+    '/api': {
       target: `http://127.0.0.1:${port}`,
       changeOrigin: true,
       pathRewrite: {
         '^': '',
       },
     },
-    '/static/': {
+    '/static': {
       target: `http://127.0.0.1:${port}`,
-      changeOrigin: true,
       pathRewrite: {
         '^': '',
       },

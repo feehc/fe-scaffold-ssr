@@ -23,14 +23,23 @@ class HomeController extends Controller {
       delete require.cache[require.resolve('../public/umi.server')];
     }
 
+    /**
+     * 调用后台seo接口，获取每个页面的seo数据信息
+     */
+    const seo = await ctx.service.seo.info();
+
     // 先走 eggjs 的view 渲染
-    const htmlTemplate = await ctx.view.render('index.html');
+    const htmlTemplate = await ctx.view.render('index.html', { seo });
+
 
     // 将 html 模板传到服务端渲染函数中
     const { error, html } = await this.serverRender({
       path: ctx.url,
-      mode: 'stream',
-      getInitialPropsCtx: {},
+      mode: 'stream', // string, stream
+      getInitialPropsCtx: {
+        protocol: ctx.request.protocol,
+        host: ctx.request.host,
+      },
       htmlTemplate,
     });
 
