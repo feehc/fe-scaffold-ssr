@@ -1,5 +1,4 @@
 import { defineConfig } from 'umi';
-import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 
 const { REACT_APP_ENV } = process.env;
@@ -25,11 +24,11 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  title: false, 
+  title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   theme: {
-    'primary-color': defaultSettings.primaryColor,
+    'primary-color': '#F22523',
   },
   targets: {
     ie: 10,

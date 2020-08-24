@@ -65,6 +65,7 @@
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.8.4",
     "@umijs/fabric": "^2.2.0",
+    "@umijs/plugin-antd": "^0.7.0",
     "@umijs/plugin-dva": "^0.7.4",
     "autod": "^3.0.1",
     "autod-egg": "^1.0.0",

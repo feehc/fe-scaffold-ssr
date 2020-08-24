@@ -39,6 +39,7 @@ class HomeController extends Controller {
       getInitialPropsCtx: {
         protocol: ctx.request.protocol,
         host: ctx.request.host,
+        domain: ctx.request.hostname,
       },
       htmlTemplate,
     });
