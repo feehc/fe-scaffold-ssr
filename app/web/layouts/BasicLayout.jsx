@@ -4,7 +4,7 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import ViewportProvider from '@/components/ViewportProvider';
 
-const Layout = ({ currentUser, dispatch, children }) => {
+const BasicLayout = ({ currentUser, dispatch, children }) => {
 
   useEffect(() => {
     dispatch({
@@ -27,4 +27,24 @@ const Layout = ({ currentUser, dispatch, children }) => {
   );
 };
 
-export default connect(({ user = {} }) => ({ currentUser: user.currentUser }))(Layout);
+BasicLayout.getInitialProps = async (ctx) => {
+  const { store: { dispatch, getState }, protocol, host, domain } = ctx;
+  console.log('BasicLayout.getInitialProps')
+  await dispatch({
+    type: 'global/os',
+    protocol,
+    host,
+    domain,
+  });
+  await dispatch({
+    type: 'global/agency',
+    protocol,
+    host,
+    domain,
+  });
+  // 开启forceInitial模式下，无需返回state
+  const { global } = getState();
+  return { global };
+};
+
+export default connect(({ user = {} }) => ({ currentUser: user.currentUser }))(BasicLayout);

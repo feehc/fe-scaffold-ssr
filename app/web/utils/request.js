@@ -3,6 +3,7 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
+import { isBrowser } from 'umi';
 import { notification } from 'antd';
 import { ROOT } from '@/utils/constants';
 
@@ -33,15 +34,23 @@ const errorHandler = error => {
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
-    });
+    if (isBrowser()) {
+      notification.error({
+        message: `请求错误 ${status}: ${url}`,
+        description: errorText,
+      });
+    } else {
+      console.error(errorText);
+    }
   } else if (!response) {
-    notification.error({
-      description: '您的网络发生异常，无法连接服务器',
-      message: '网络异常',
-    });
+    if (isBrowser()) {
+      notification.error({
+        description: '您的网络发生异常，无法连接服务器',
+        message: '网络异常',
+      });
+    } else {
+      console.error('您的网络发生异常，无法连接服务器');
+    }
   }
 
   return response;
@@ -58,13 +67,22 @@ const request = extend({
 
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use((url, options) => {
+  const { protocol = 'http', host = '', domain = '' } = options;
+  delete options.protocol;
+  delete options.host;
+  delete options.domain;
+  if (process.env.NODE_ENV === 'development') {
+    url = isBrowser() ? `${ROOT}${url}` : `${process.env.SOCKET_SERVER}${ROOT}${url}`;
+  } else {
+    url = isBrowser() ? `${ROOT}${url}` : `${protocol}://${host}${ROOT}${url}`;
+  }
   return {
-    url: `${ROOT}${url}`,
+    url,
     options: {
       ...options,
       headers: {
-        // 'Domain-Name': document.domain,
-        'Domain-Name': 'www.huicheng8.com',
+        ...options.headers,
+        'Domain-Name': isBrowser() ? document.domain : domain,
         token: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySnNvbiI6IntcImFnZW5jeUlkXCI6MSxcImFnZW5jeU5hbWVcIjpcIui-ieeoi-aVmeiCslwiLFwiaGVhZEltZ1wiOlwiXCIsXCJsb2dpblRpbWVcIjoxNTk3MTM5MjgzNjU1LFwibmFtZVwiOlwi5ZSQ57uF5aOrXCIsXCJzdXBlckFkbWluXCI6ZmFsc2UsXCJ1c2VySWRcIjoxLFwidXNlck5hbWVcIjpcInRhbmdsaVwiLFwidXNlclR5cGVcIjozfSJ9.rL1lO0ch8ycNUGUUCrRZbaqr2y_Zc1Cop_pKFMfP3Q0',
       },
     },

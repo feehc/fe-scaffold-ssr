@@ -22,7 +22,7 @@ class HomeController extends Controller {
     if (isDev) {
       delete require.cache[require.resolve('../public/umi.server')];
     }
-
+    
     /**
      * 调用后台seo接口，获取每个页面的seo数据信息
      */

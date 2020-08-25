@@ -5,6 +5,7 @@ const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   ssr: {
+    forceInitial: false,
     devServerRender: false,
   },
   hash: true,
@@ -36,7 +37,7 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      component: '../layouts/Base',
+      component: '../layouts/BasicLayout',
       routes: [
         {
           path: '/',
